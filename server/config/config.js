@@ -41,3 +41,8 @@ if (process.env.NODE_ENV === 'dev') {
     SEED = process.env.seedProduccion;
 }
 process.env.SEED = SEED;
+
+// =====================
+// Google Client ID
+// =====================
+process.env.CLIENT_ID = process.env.CLIENT_ID || '519467979831-bck72pb5pgeaok88m1n3g9uu6rkhrg9j.apps.googleusercontent.com';
