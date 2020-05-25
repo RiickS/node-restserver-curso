@@ -1,11 +1,16 @@
+// Requerimos las librerias necesarias
 const express = require('express');
 
 const bcrypt = require('bcryptjs');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
+
+//Importamos los middlewares
 const { verificaToken, verificaAdmin } = require('../middlewares/autenticacion');
 const app = express();
+
+//Declaramos los metodos a usar
 
 app.get('/usuario', [verificaToken], (req, res) => {
 
@@ -23,14 +28,14 @@ app.get('/usuario', [verificaToken], (req, res) => {
         .exec((err, usuarios) => {
 
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     ok: false,
                     err
                 });
             }
 
 
-            Usuario.count({ estado: true }, (err, conteo) => {
+            Usuario.countDocuments({ estado: true }, (err, conteo) => {
 
                 res.json({
                     ok: true,
@@ -60,7 +65,7 @@ app.post('/usuario', [verificaToken, verificaAdmin], (req, res) => {
 
     usuario.save((err, usuarioDB) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -80,13 +85,15 @@ app.post('/usuario', [verificaToken, verificaAdmin], (req, res) => {
 app.put('/usuario/:id', [verificaToken, verificaAdmin], (req, res) => {
 
     let id = req.params.id;
+
+    // Filtramos los campos que necesitabamos
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
 
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -112,7 +119,7 @@ app.delete('/usuario/:id', [verificaToken, verificaAdmin], (req, res) => {
     Usuario.findByIdAndUpdate(id, cambioEstado, { new: true }, (err, usuarioBorrado) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -137,5 +144,6 @@ app.delete('/usuario/:id', [verificaToken, verificaAdmin], (req, res) => {
 
 
 });
+
 
 module.exports = app;

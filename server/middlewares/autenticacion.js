@@ -51,6 +51,8 @@ let verificaAdmin = (req, res, next) => {
 };
 
 
+//Exportamos
+
 module.exports = {
     verificaToken,
     verificaAdmin

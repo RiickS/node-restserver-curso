@@ -42,6 +42,7 @@ let usuarioSchema = new Schema({
     }
 });
 
+// Redefiniendo el metodo toJSON para borrar una propiedad de un objeto
 usuarioSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
@@ -52,5 +53,6 @@ usuarioSchema.methods.toJSON = function() {
 
 
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser unico ' });
+
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
